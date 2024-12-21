@@ -1,7 +1,7 @@
 import { Player } from './entities.js';
 import { Helmet, Comet } from './items.js';
 import { setupControls } from '../ui/controls.js';
-import { renderGame } from '../ui/renderer.js';
+import { renderGame, renderEndScreen } from '../ui/renderer.js';
 import { applyGravity, handleCollisions } from './physics.js';
 
 function getRandomPosition(maxWidth, maxHeight, size) {
@@ -30,18 +30,18 @@ export function initGame(container, endGameCallback) {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const playerSize = 30;
-    const helmetSize = 30;
-    const cometSize = 20;
+    const playerSize = 60;
+    const helmetSize = 40;
+    const cometSize = 50;
     const playerPosition = getRandomPosition(canvas.width, canvas.height, playerSize);
     const helmetPosition = getRandomPosition(canvas.width, canvas.height, helmetSize);
 
-    const player = new Player(playerPosition.x, playerPosition.y, playerSize);
-    const helmet = new Helmet(helmetPosition.x, helmetPosition.y, helmetSize);
+    const player = new Player(playerPosition.x, playerPosition.y, playerSize, 'public/assets/images/IN_GAME.png');
+    const helmet = new Helmet(helmetPosition.x, helmetPosition.y, helmetSize, 'public/assets/images/Helmet.png');
 
     const comets = Array.from({ length: 3 }, () => {
         const cometPosition = getRandomPosition(canvas.width, canvas.height, cometSize);
-        return new Comet(cometPosition.x, cometPosition.y, cometSize, Math.random() * 0.5);
+        return new Comet(cometPosition.x, cometPosition.y, cometSize, Math.random() * 0.5, 'public/assets/images/Asteroid.png');
     });
 
     setupControls(player);
@@ -53,10 +53,11 @@ export function initGame(container, endGameCallback) {
 
         applyGravity(player);
         player.update();
+        helmet.update();
 
         if (handleCollisions(player, helmet)) {
             const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-            endGameCallback('You Win!', timeElapsed);
+            renderEndScreen(ctx, player, 'You Win!', timeElapsed);
             return;
         }
 
@@ -65,7 +66,7 @@ export function initGame(container, endGameCallback) {
 
             if (comets[i].collidesWith(player)) {
                 const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-                endGameCallback('Game Over! You collided with a comet.', timeElapsed);
+                renderEndScreen(ctx, player, 'Game Over', timeElapsed);
                 return;
             }
         }
@@ -76,4 +77,5 @@ export function initGame(container, endGameCallback) {
     }
 
     gameLoop();
+    return player;
 }

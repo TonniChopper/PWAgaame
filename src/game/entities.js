@@ -1,21 +1,19 @@
 export class Player {
-    constructor(x, y, size) {
+    constructor(x, y, size, imageSrc) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speedX = 0;
         this.speedY = 0;
+        this.image = new Image();
+        this.image.src = imageSrc;
     }
 
     update() {
         this.x += this.speedX;
         this.y += this.speedY;
-
-        // Замедление и инерция
         this.speedX *= 0.98;
         this.speedY *= 0.98;
-
-        // Проверка границ экрана
         this.checkBounds();
     }
 
@@ -26,10 +24,11 @@ export class Player {
         if (this.y + this.size > window.innerHeight) this.y = window.innerHeight - this.size;
     }
 
-    draw(ctx) {
-        ctx.fillStyle = 'white';
-        ctx.fillRect(this.x, this.y, this.size, this.size);
-    }
+    // draw(ctx) {
+    //     if (this.image.complete) {
+    //         ctx.drawImage(this.image, this.x, this.y, this.size, this.size);
+    //     }
+    // }
 
     collidesWith(object) {
         return (
@@ -38,5 +37,9 @@ export class Player {
             this.y < object.y + object.size &&
             this.y + this.size > object.y
         );
+    }
+
+    setImage(imageSrc) {
+        this.image.src = imageSrc;
     }
 }

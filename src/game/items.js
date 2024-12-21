@@ -1,10 +1,13 @@
 export class Helmet {
-    constructor(x, y, size) {
+    constructor(x, y, size, imageSrc) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speedX = (Math.random() - 0.5) * 0.5; // Медленная скорость по X
         this.speedY = (Math.random() - 0.5) * 0.5; // Медленная скорость по Y
+        this.image = new Image();
+        this.image.src = imageSrc;
+
     }
 
     update() {
@@ -41,41 +44,35 @@ export class Helmet {
 }
 
 export class Comet {
-    constructor(x, y, size, speed) {
+    constructor(x, y, size, speed, imageSrc) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speed = speed;
+        this.image = new Image();
+        this.image.src = imageSrc;
     }
 
     update() {
-        this.x += this.speed;
         this.y += this.speed;
-
-        // Проверка границ экрана
-        this.checkBounds();
+        if (this.y > window.innerHeight) {
+            this.y = -this.size;
+            this.x = Math.random() * (window.innerWidth - this.size);
+        }
     }
 
-    checkBounds() {
-        if (this.x < 0) this.x = 0;
-        if (this.y < 0) this.y = 0;
-        if (this.x + this.size > window.innerWidth) this.x = window.innerWidth - this.size;
-        if (this.y + this.size > window.innerHeight) this.y = window.innerHeight - this.size;
-    }
+    // draw(ctx) {
+    //     if (this.image.complete) {
+    //         ctx.drawImage(this.image, this.x, this.y, this.size, this.size);
+    //     }
+    // }
 
-    draw(ctx) {
-        ctx.fillStyle = 'red';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    collidesWith(object) {
+    collidesWith(player) {
         return (
-            this.x < object.x + object.size &&
-            this.x + this.size > object.x &&
-            this.y < object.y + object.size &&
-            this.y + this.size > object.y
+            this.x < player.x + player.size &&
+            this.x + this.size > player.x &&
+            this.y < player.y + player.size &&
+            this.y + this.size > player.y
         );
     }
 }

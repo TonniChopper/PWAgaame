@@ -1,23 +1,51 @@
+const backgroundImage = new Image();
+backgroundImage.src = 'public/assets/images/space.jpg';
+
 export function renderGame(ctx, player, helmet, comets) {
-    // Рисуем фон
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, 800, 600);
-
-    // Рисуем игрока
-    ctx.fillStyle = 'white';
-    ctx.fillRect(player.x, player.y, player.size, player.size);
-
-    // Рисуем шлем
-    ctx.fillStyle = 'yellow';
-    ctx.beginPath();
-    ctx.arc(helmet.x + helmet.size / 2, helmet.y + helmet.size / 2, helmet.size / 2, 0, Math.PI * 2);
-    ctx.fill();
-
-    for (let comet of comets) {
-        ctx.beginPath();
-        ctx.arc(comet.x, comet.y, comet.size, 0, Math.PI * 2);
-        ctx.fillStyle = 'gray'; // Цвет кометы
-        ctx.fill();
-        ctx.closePath();
+    // Draw background
+    if (backgroundImage.complete) {
+        ctx.drawImage(backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
     }
+
+    // Draw player if image is loaded
+    if (player.image && player.image.complete) {
+        ctx.drawImage(player.image, player.x, player.y, player.size, player.size);
+    }
+
+    // Draw helmet if image is loaded
+    if (helmet.image && helmet.image.complete) {
+        ctx.drawImage(helmet.image, helmet.x, helmet.y, helmet.size, helmet.size);
+    }
+
+    // Draw comets if images are loaded
+    for (let comet of comets) {
+        if (comet.image && comet.image.complete) {
+            ctx.drawImage(comet.image, comet.x, comet.y, comet.size, comet.size);
+        }
+    }
+}
+
+export function renderEndScreen(ctx, player, message, timeElapsed) {
+    // Draw background
+    if (backgroundImage.complete) {
+        ctx.drawImage(backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
+    }
+
+    // Display end message
+    ctx.fillStyle = 'white';
+    ctx.font = '48px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(message, ctx.canvas.width / 2, ctx.canvas.height / 2 - 50);
+
+    // Display time elapsed
+    ctx.font = '24px Arial';
+    ctx.fillText(`Time: ${timeElapsed} seconds`, ctx.canvas.width / 2, ctx.canvas.height / 2);
+
+    // Draw player image on the side if loaded
+    if (player.image && player.image.complete) {
+        const imageSize = 100;
+        ctx.drawImage(player.image, ctx.canvas.width - imageSize - 20, 20, imageSize, imageSize);
+    }
+    const playAgainButton = document.getElementById('play-again-button');
+    playAgainButton.style.display = 'block';
 }
