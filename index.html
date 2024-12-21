@@ -12,13 +12,24 @@
     <button id="start-button">Start Game</button>
 </div>
 <div id="game-container">
-    <canvas id="game-canvas"></canvas>
+    <canvas id="ga000me-canvas"></canvas>
 </div>
 <div id="end-screen">
     <h1 id="end-message"></h1>
     <p id="game-time"></p>
     <button id="play-again-button">Play Again</button>
 </div>
+<!-- Меню паузы -->
+<div id="pause-menu" style="transform: translateY(-100%);"> <!-- ИЗМЕНЕНИЕ -->
+    <img src="public/assets/images/IN_GAME.png" alt="Continue Icon" id="continue-icon" /> <!-- ИЗМЕНЕНИЕ -->
+    <button id="continue-button">Continue Playing</button>
+
+</div>
+
+<!-- Кнопка паузы -->
+<button id="pause-button">Pause</button> <!-- ИЗМЕНЕНИЕ -->
+
+
 <script src="src/app.js" type="module"></script>
 </body>
 </html>
