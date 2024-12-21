@@ -1,48 +1,51 @@
 export function setupControls(player) {
     document.addEventListener('keydown', (event) => {
+        const speedChange = 0.5;
         switch (event.key) {
             case 'ArrowUp':
-                player.speedY -= 0.5; // Это уменьшит вертикальную скорость (вверх)
+                player.speedY -= speedChange;
                 break;
             case 'ArrowDown':
-                player.speedY += 0.5; // Это увеличит вертикальную скорость (вниз)
+                player.speedY += speedChange;
                 break;
             case 'ArrowLeft':
-                player.speedX -= 0.5; // Влево
+                player.speedX -= speedChange;
                 break;
             case 'ArrowRight':
-                player.speedX += 0.5; // Вправо
+                player.speedX += speedChange;
                 break;
         }
     });
 
+    if (!window.DeviceOrientationEvent) return;
 
+    const sensitivity = 0.05;
+    const damping = 0.7;
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-    if (window.DeviceOrientationEvent) {
-        const sensitivity = 0.05; // Увеличенная чувствительность для резкого движения
-        const damping = 0.7; // Ещё меньшее сглаживание для быстрого отклика
-        let isMobile = /Mobi|Android/i.test(navigator.userAgent); // Проверяем, мобильное ли устройство
+    if (!isMobile) return;
 
-        if (isMobile) {
-            window.addEventListener('deviceorientation', (event) => {
-                if (event.gamma && event.beta) {
-                    // Рассчитываем целевые скорости с учетом чувствительности
-                    const targetSpeedX = event.gamma * sensitivity;
-                    const targetSpeedY = event.beta * sensitivity;
+    const applyGyroMovement = (event) => {
+        if (event.gamma && event.beta) {
+            const targetSpeedX = event.gamma * sensitivity;
+            const targetSpeedY = event.beta * sensitivity;
 
-                    // Постепенно приближаемся к целевым скоростям для более резкого движения
-                    player.speedX = player.speedX * damping + targetSpeedX * (1 - damping);
-                    player.speedY = player.speedY * damping + targetSpeedY * (1 - damping);
-
-                    // Ограничиваем скорость, чтобы движения оставались управляемыми
-                    player.speedX = Math.min(Math.max(player.speedX, -6), 6);
-                    player.speedY = Math.min(Math.max(player.speedY, -6), 6);
-                }
-            });
+            player.speedX = Math.min(Math.max(player.speedX * damping + targetSpeedX * (1 - damping), -6), 6);
+            player.speedY = Math.min(Math.max(player.speedY * damping + targetSpeedY * (1 - damping), -6), 6);
         }
+    };
+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+            .then((permissionState) => {
+                if (permissionState === 'granted') {
+                    window.addEventListener('deviceorientation', applyGyroMovement);
+                } else {
+                    alert("Гироскоп отключён пользователем. Включите доступ в настройках устройства.");
+                }
+            })
+            .catch(() => alert("Не удалось запросить разрешение на доступ к гироскопу."));
+    } else {
+        window.addEventListener('deviceorientation', applyGyroMovement);
     }
-
-
 }
-
-
