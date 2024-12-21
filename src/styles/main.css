@@ -49,9 +49,152 @@ body {
     height: 100%;
     display: block;
 }
+
+/*
 #end-screen {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}*/
+
+#end-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black ;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    z-index: 300;
 }
+
+
+#end-screen.active {
+    display: flex;
+}
+
+#end-screen h1, #end-screen p {
+    color: white;
+    text-align: center;
+    margin: 10px 0;
+}
+
+#play-again-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: #6200ea;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#play-again-button:hover {
+    background-color: #3700b3;
+    transform: scale(1.05);
+}
+
+#game-timer { /*ИЗМЕНЕНИЕ*/
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    z-index: 100;
+}
+
+
+
+#pause-button { /*ИЗМЕНЕНИЕ*/
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    font-size: 20px;
+    background-color: #6200ea;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    z-index: 200;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#pause-button:hover { /*ИЗМЕНЕНИЕ*/
+    background-color: #3700b3;
+}
+
+#pause-menu { /*ИЗМЕНЕНИЕ*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transform: translateY(-100%);
+    transition: transform 0.5s ease;
+    z-index: 300;
+}
+
+#continue-icon { /*ИЗМЕНЕНИЕ*/
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+
+#continue-button { /*ИЗМЕНЕНИЕ*/
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: #6200ea;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#continue-button:hover { /*ИЗМЕНЕНИЕ*/
+    background-color: #3700b3;
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    #end-screen {
+        padding: 10px;
+    }
+
+    #end-screen img {
+        width: 40%;!important;
+        max-width: 120px;!important;
+    }
+
+    #end-message {
+        font-size: 20px;
+    }
+
+    #game-time {
+        font-size: 14px;
+    }
+
+    #play-again-button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+

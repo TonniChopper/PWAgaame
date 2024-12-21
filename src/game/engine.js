@@ -1,13 +1,41 @@
+
 import { Player } from './entities.js';
 import { Helmet, Comet } from './items.js';
 import { setupControls } from '../ui/controls.js';
-import { renderGame, renderEndScreen } from '../ui/renderer.js';
+/*import { renderGame, renderEndScreen } from '../ui/renderer.js';*/
+import { renderGame} from '../ui/renderer.js';
 import { applyGravity, handleCollisions } from './physics.js';
 
 function getRandomPosition(maxWidth, maxHeight, size) {
     const x = Math.random() * (maxWidth - size);
     const y = Math.random() * (maxHeight - size);
     return { x, y };
+}
+
+let elapsedTime = 0;
+let isPaused = false;
+
+function updateTimer(startTime) {
+    const timeElement = document.getElementById('game-timer');
+    if (!isPaused) {
+        elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
+    }
+    if (timeElement) {
+        timeElement.textContent = `Time: ${elapsedTime} s`;
+    }
+}
+
+function togglePause() {
+    isPaused = !isPaused;
+    const pauseMenu = document.getElementById('pause-menu');
+    const continueIcon = document.getElementById('continue-icon');
+    if (isPaused) {
+        pauseMenu.style.transform = 'translateY(0)';
+        continueIcon.style.display = 'block';
+    } else {
+        pauseMenu.style.transform = 'translateY(-100%)';
+        continueIcon.style.display = 'none';
+    }
 }
 
 export function initGame(container, endGameCallback) {
@@ -48,16 +76,32 @@ export function initGame(container, endGameCallback) {
 
     let startTime = Date.now();
 
+    const pauseButton = document.getElementById('pause-button');
+    pauseButton.style.display = 'block';
+    pauseButton.addEventListener('click', togglePause);
+
+    const continueButton = document.getElementById('continue-button');
+    continueButton.addEventListener('click', togglePause);
+
+
+
     function gameLoop() {
+        if (isPaused) {
+            requestAnimationFrame(gameLoop);
+            return;
+        }
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         applyGravity(player);
         player.update();
         helmet.update();
 
+        updateTimer(startTime);
+
         if (handleCollisions(player, helmet)) {
             const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-            renderEndScreen(ctx, player, 'You Win!', timeElapsed);
+            endGameCallback('You Win!', timeElapsed);
             return;
         }
 
@@ -66,7 +110,7 @@ export function initGame(container, endGameCallback) {
 
             if (comets[i].collidesWith(player)) {
                 const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-                renderEndScreen(ctx, player, 'Game Over', timeElapsed);
+                endGameCallback('Game Over!', timeElapsed);
                 return;
             }
         }

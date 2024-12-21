@@ -2,6 +2,15 @@ const backgroundImage = new Image();
 backgroundImage.src = 'public/assets/images/space.jpg';
 
 export function renderGame(ctx, player, helmet, comets) {
+
+    let timeElement = document.getElementById('game-timer'); //ИЗМЕНЕНИЕ
+    if (!timeElement) { //ИЗМЕНЕНИЕ
+        timeElement = document.createElement('div'); //ИЗМЕНЕНИЕ
+        timeElement.id = 'game-timer'; //ИЗМЕНЕНИЕ
+        document.body.appendChild(timeElement); //ИЗМЕНЕНИЕ
+    }
+
+
     // Draw background
     if (backgroundImage.complete) {
         ctx.drawImage(backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -25,6 +34,8 @@ export function renderGame(ctx, player, helmet, comets) {
     }
 }
 
+
+/*
 export function renderEndScreen(ctx, player, message, timeElapsed) {
     // Draw background
     if (backgroundImage.complete) {
@@ -49,3 +60,5 @@ export function renderEndScreen(ctx, player, message, timeElapsed) {
     const playAgainButton = document.getElementById('play-again-button');
     playAgainButton.style.display = 'block';
 }
+
+*/
