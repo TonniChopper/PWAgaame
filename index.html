@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA Game</title>
+    <title>Space Game</title>
+    <!-- Подключение фавикона для компьютеров -->
+    <link rel="icon" href="public/assets/favicon/favicon-16x16.png" type="image/x-icon">
+
+    <!-- Подключение фавиконов для разных устройств -->
+    <!-- Фавикон для устройств Apple -->
+    <link rel="apple-touch-icon" sizes="180x180" href="public/assets/favicon/apple-touch-icon.png">
+
+    <!-- Иконки для Android -->
+    <link rel="icon" type="image/png" sizes="192x192" href="public/assets/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="public/assets/favicon/android-chrome-512x512.png">
+
     <link rel="stylesheet" href="src/styles/main.css">
 </head>
 <body>
-<div id="menu">
+
+
+
+<div id="menu" style="background: url('public/assets/images/background.webp') no-repeat center center; background-size: cover;">
+<img src="public/assets/images/Helmet.png" alt="Helmet" class="floating-image"  style="position: absolute; top: 70%; left: 5%;" >
+     <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; top: 15%; left: 1%;" >
+    <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; top: 5%; left: 10%;">
+    <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; bottom: 5%; right: 5%;">
+    <img src="public/assets/images/alian.png" alt="Alian" class="floating-image" style="position: absolute; top: 5%; right: 5%">
     <h1>Welcome to the Space Game</h1>
     <button id="start-button">Start Game</button>
 </div>
