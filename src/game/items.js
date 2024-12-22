@@ -76,3 +76,35 @@ export class Comet {
         );
     }
 }
+export class ExtraTime {
+    constructor(x, y, size, imageSrc) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.image = new Image();
+        this.image.src = imageSrc;
+    }
+    //     this.imageLoaded = false;
+    //
+    //     this.image.onload = () => {
+    //         this.imageLoaded = true;
+    //     };
+    // }
+
+    // update() {
+    //
+    // }
+    //
+    // draw(ctx) {
+    //     if (this.imageLoaded) {
+    //         ctx.drawImage(this.image, this.x, this.y, this.size, this.size);
+    //     }
+    // }
+
+    collidesWith(player) {
+        const dx = this.x - player.x;
+        const dy = this.y - player.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < this.size / 2 + player.size / 2;
+    }
+}

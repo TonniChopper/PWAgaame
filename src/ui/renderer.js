@@ -1,7 +1,8 @@
+
 const backgroundImage = new Image();
 backgroundImage.src = 'public/assets/images/space.jpg';
 
-export function renderGame(ctx, player, helmet, comets) {
+export function renderGame(ctx, player, helmet, comets, extraTimeItems) {
 
     let timeElement = document.getElementById('game-timer'); //ИЗМЕНЕНИЕ
     if (!timeElement) { //ИЗМЕНЕНИЕ
@@ -30,6 +31,14 @@ export function renderGame(ctx, player, helmet, comets) {
     for (let comet of comets) {
         if (comet.image && comet.image.complete) {
             ctx.drawImage(comet.image, comet.x, comet.y, comet.size, comet.size);
+        }
+    }
+
+    if(extraTimeItems){
+        for (let extraTimeItem of extraTimeItems) {
+            if (extraTimeItem.image && extraTimeItem.image.complete) {
+                ctx.drawImage(extraTimeItem.image, extraTimeItem.x, extraTimeItem.y, extraTimeItem.size, extraTimeItem.size);
+            }
         }
     }
 }

@@ -1,9 +1,8 @@
-
 import { initGame } from './game/engine.js';
-/*import { renderEndScreen } from './ui/renderer.js';*/
+import { levels } from './game/levels.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const startButton = document.getElementById('start-button');
+    //const startButton = document.getElementById('start-button');
     const menu = document.getElementById('menu');
     const gameContainer = document.getElementById('game-container');
     const endScreen = document.getElementById('end-screen');
@@ -11,24 +10,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const endMessage = document.getElementById('end-message');
     const gameTime = document.getElementById('game-time');
     const canvas = document.getElementById('game-canvas');
-   /* const ctx = canvas.getContext('2d');*/
     const pauseButton = document.getElementById('pause-button'); //ИЗМЕНЕНИЕ
+    const levelButtons = document.querySelectorAll('.level-button');
 
     let player;
+    let selectedLevel = 0;
 
-    startButton.addEventListener('click', () => {
-        menu.style.display = 'none';
-        endScreen.style.display = 'none';
-        gameContainer.style.display = 'block';
-        player = initGame(gameContainer, endGameCallback);
-        pauseButton.style.display = 'block'; // Показать кнопку паузы //ИЗМЕНЕНИЕ
+    levelButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            selectedLevel = button.getAttribute('data-level');
+            if (selectedLevel) {
+                menu.style.display = 'none';
+                gameContainer.style.display = 'block';
+                endScreen.style.display = 'none';
+                player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
+                pauseButton.style.display = 'block';
+            }
+        });
     });
+
+    // function startGame() {
+    //     if (selectedLevel) {
+    //         menu.style.display = 'none';
+    //         gameContainer.style.display = 'block';
+    //         endScreen.style.display = 'none';
+    //         player = initGame(gameContainer, endGameCallback, levels[currentLevel]);
+    //         pauseButton.style.display = 'block';
+    //     }
+    // }
+    // startButton.addEventListener('click', () => {
+    //     menu.style.display = 'none';
+    //     endScreen.style.display = 'none';
+    //     gameContainer.style.display = 'block';
+    //     player = initGame(gameContainer, endGameCallback, levels[currentLevel]);
+    //     pauseButton.style.display = 'block'; // Показать кнопку паузы //ИЗМЕНЕНИЕ
+    // });
 
     playAgainButton.addEventListener('click', () => {
         endScreen.style.display = 'none';
         gameContainer.style.display = 'block';
         pauseButton.style.display = 'block'; // Показать кнопку паузы //ИЗМЕНЕНИЕ
-        player = initGame(gameContainer, endGameCallback);
+        player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
     });
 
 
@@ -54,6 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
         endScreen.appendChild(gameTime);
         endScreen.appendChild(playAgainButton);
 
+        if (message === 'You Win!') {
+            const nextLevelButton = document.createElement('button');
+            nextLevelButton.textContent = 'Next Level';
+            nextLevelButton.style.marginTop = '20px'; // Отступ сверху
+            nextLevelButton.addEventListener('click', () => {
+                selectedLevel = (selectedLevel + 2) % levels.length;
+                endScreen.style.display = 'none';
+                gameContainer.style.display = 'block';
+                player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
+            });
+            endScreen.appendChild(nextLevelButton);
+        }
 
         playAgainButton.style.display = 'block';
 
