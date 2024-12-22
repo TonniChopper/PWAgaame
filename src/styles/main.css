@@ -17,8 +17,77 @@ body {
     text-align: center;
 }
 
+.floating-image {
+    position: absolute; /* Для анимации движения */
+    /*width: 80px; /* Размер изображения */
+    animation: float 5s infinite ease-in-out; /* Анимация */
+    width: 12vw; /* Ширина фигуры составляет 10% от ширины экрана */
+    height: auto;
+}
+
+
+@media (max-width: 700px) {
+    .floating-image {
+        width: 20vw;
+    }
+}
+
+/* Анимация для плавающих изображений //ИЗМЕНЕНИЕ */
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-20px) translateX(10px);
+    }
+    100% {
+        transform: translateY(0) translateX(0);
+    }
+}
+
+/* Размещение изображений в разных позициях //ИЗМЕНЕНИЕ */
+.floating-image:nth-child(1) {
+    top: 20px;
+    left: 50px;
+    animation-delay: 0s; /* Задержка анимации */
+}
+
+.floating-image:nth-child(2) {
+    top: 100px;
+    left: 150px;
+    animation-delay: 1s; /* Задержка анимации */
+}
+
+.floating-image:nth-child(3) {
+    top: 50px;
+    left: 250px;
+    animation-delay: 2s; /* Задержка анимации */
+}
+
+@font-face {
+    font-family: 'Audiowide';
+    src: url('../../public/assets/fonts/Audiowide-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+/*
+#menu{
+    position: relative;
+    width: 100%;
+    background-size: cover;
+    /*border-radius: 10px;
+    /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+*/
+
+
+
 #menu h1, #end-screen h1 {
     margin-bottom: 20px;
+    font-family: "Audiowide", sans-serif;
 }
 
 #start-button, #play-again-button {
@@ -30,6 +99,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    font-family: "Audiowide", sans-serif;
 }
 
 #start-button:hover, #play-again-button:hover {
@@ -73,6 +143,7 @@ body {
     opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
     z-index: 300;
+    font-family: "Audiowide", sans-serif;
 }
 
 
@@ -95,6 +166,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    font-family: "Audiowide", sans-serif;
 }
 
 #play-again-button:hover {
@@ -108,8 +180,9 @@ body {
     left: 10px;
     color: white;
     font-size: 20px;
-    font-family: Arial, sans-serif;
+    font-family: "Audiowide", sans-serif;
     z-index: 100;
+
 }
 
 
@@ -128,6 +201,7 @@ body {
     cursor: pointer;
     z-index: 200;
     transition: background-color 0.3s, transform 0.3s;
+    font-family: "Audiowide", sans-serif;
 }
 
 #pause-button:hover { /*ИЗМЕНЕНИЕ*/
@@ -167,11 +241,14 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
+    font-family: "Audiowide", sans-serif;
 }
 
 #continue-button:hover { /*ИЗМЕНЕНИЕ*/
     background-color: #3700b3;
 }
+
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
 @media (max-height: 500px) and (orientation: landscape) {
     #end-screen {
