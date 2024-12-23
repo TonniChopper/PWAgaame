@@ -17,6 +17,7 @@ body {
     text-align: center;
 }
 
+
 .floating-image {
     position: absolute; /* Для анимации движения */
     /*width: 80px; /* Размер изображения */
@@ -73,24 +74,69 @@ body {
 
 
 
-/*
-#menu{
-    position: relative;
-    width: 100%;
-    background-size: cover;
-    /*border-radius: 10px;
-    /*box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-*/
-
-
-
 #menu h1, #end-screen h1 {
     margin-bottom: 20px;
     font-family: "Audiowide", sans-serif;
 }
+#level-buttons {
+    display: flex;
+    gap: 10px;
 
-#start-button, #play-again-button {
+}
+
+.level-button {
+    position: relative;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #6200ea;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    font-family: "Audiowide", sans-serif;
+    overflow: hidden;
+}
+.level-button .level-text {
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.3s;
+}
+
+.level-button .hover-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    font-size: 16px;
+    transition: opacity 0.3s;
+    z-index: 2;
+}
+
+.level-button:hover .hover-text {
+    opacity: 1;
+}
+
+.level-button:hover .level-text {
+    opacity: 0;
+}
+
+@media (max-width: 700px) {
+    #level-buttons {
+        display: flex;
+        flex-direction: column; /* Расположение кнопок в колонку */
+        gap: 15px; /* Отступы между кнопками */
+        align-items: center; /* Центрирование кнопок */
+    }
+
+    .level-button {
+        /*width: 80%; /* Уменьшаем ширину кнопок на мобильных устройствах */
+        text-align: center; /* Центрирование текста */
+    }
+}
+
+#play-again-button {
     padding: 10px 20px;
     font-size: 18px;
     color: #ffffff;
@@ -102,7 +148,7 @@ body {
     font-family: "Audiowide", sans-serif;
 }
 
-#start-button:hover, #play-again-button:hover {
+#level-button:hover, #play-again-button:hover,#continue-button:hover {
     background-color: #3700b3;
     transform: scale(1.05);
 }
@@ -120,13 +166,6 @@ body {
     display: block;
 }
 
-/*
-#end-screen {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}*/
 
 #end-screen {
     position: fixed;
@@ -169,7 +208,7 @@ body {
     font-family: "Audiowide", sans-serif;
 }
 
-#play-again-button:hover {
+#play-again-button:hover,#pause-button:hover,#next-level-button:hover,#start-level-button:hover {
     background-color: #3700b3;
     transform: scale(1.05);
 }
@@ -180,9 +219,9 @@ body {
     left: 10px;
     color: white;
     font-size: 20px;
-    font-family: "Audiowide", sans-serif;
-    z-index: 100;
 
+    z-index: 100;
+    font-family: "Audiowide", sans-serif;
 }
 
 
@@ -203,12 +242,12 @@ body {
     transition: background-color 0.3s, transform 0.3s;
     font-family: "Audiowide", sans-serif;
 }
-
-#pause-button:hover { /*ИЗМЕНЕНИЕ*/
+/*
+#pause-button:hover,#next-level-button:hover {
     background-color: #3700b3;
 }
-
-#pause-menu { /*ИЗМЕНЕНИЕ*/
+*/
+#pause-menu,#level-menu{ /*ИЗМЕНЕНИЕ*/
     position: fixed;
     top: 0;
     left: 0;
@@ -224,6 +263,24 @@ body {
     z-index: 300;
 }
 
+#level-menu {
+    text-align: center;
+    font-family: "Audiowide", sans-serif;
+}
+
+#level-message {
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.5; /* Увеличиваем межстрочный интервал для читаемости */
+    white-space: pre-wrap;
+}
+
+
+
+
+
 #continue-icon { /*ИЗМЕНЕНИЕ*/
     width: 100px;
     height: 100px;
@@ -232,7 +289,8 @@ body {
 }
 
 
-#continue-button { /*ИЗМЕНЕНИЕ*/
+
+#continue-button,#next-level-button,#start-level-button { /*ИЗМЕНЕНИЕ*/
     padding: 10px 20px;
     font-size: 18px;
     color: white;
@@ -243,13 +301,11 @@ body {
     transition: background-color 0.3s, transform 0.3s;
     font-family: "Audiowide", sans-serif;
 }
-
-#continue-button:hover { /*ИЗМЕНЕНИЕ*/
+/*
+#continue-button:hover {
     background-color: #3700b3;
 }
-
-/*////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
-
+*/
 @media (max-height: 500px) and (orientation: landscape) {
     #end-screen {
         padding: 10px;
@@ -273,5 +329,20 @@ body {
         padding: 8px 16px;
     }
 }
+#timer-bar-container {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background-color: rgba(255, 255, 0, 0.2); /* Полупрозрачный фон */
+}
 
+#timer-bar {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 0, 0.8); /* Желтая полоса */
+    transition: width 0.1s linear; /* Плавное изменение ширины */
+}
 

@@ -1,6 +1,4 @@
-export function applyGravity(player) {
-    const gravity = 0.01; // Уменьшенная сила гравитации
-
+export function applyGravity(player, gravity) {
     if (player.y + player.size < 600) {
         player.speedY += gravity; // Гравитация вниз
     }
@@ -8,7 +6,6 @@ export function applyGravity(player) {
 
 export function handleCollisions(player, helmet) {
     if (player.collidesWith(helmet)) {
-        // Можно добавить эффект столкновения, если надо
         return true;
     }
     return false;

@@ -17,22 +17,49 @@
 
     <link rel="stylesheet" href="src/styles/main.css">
 </head>
+
 <body>
-
-
-
 <div id="menu" style="background: url('public/assets/images/background.webp') no-repeat center center; background-size: cover;">
-<img src="public/assets/images/Helmet.png" alt="Helmet" class="floating-image"  style="position: absolute; top: 70%; left: 5%;" >
-     <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; top: 15%; left: 1%;" >
+    <img src="public/assets/images/Helmet.png" alt="Helmet" class="floating-image"  style="position: absolute; top: 70%; left: 5%;" >
+    <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; top: 15%; left: 1%;" >
     <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; top: 5%; left: 10%;">
     <img src="public/assets/images/Asteroid.png" alt="Asteroid" class="floating-image" style="position: absolute; bottom: 5%; right: 5%;">
     <img src="public/assets/images/alian.png" alt="Alian" class="floating-image" style="position: absolute; top: 5%; right: 5%">
+
+
     <h1>Welcome to the Space Game</h1>
-    <button id="start-button">Start Game</button>
+    <div id="level-buttons">
+        <button class="level-button" data-level="1">
+            <span class="level-text">Level 1</span>
+            <span class="hover-text">Start Game</span>
+        </button>
+        <button class="level-button" data-level="2">
+            <span class="level-text">Level 2</span>
+            <span class="hover-text">Start Game</span>
+        </button>
+        <button class="level-button" data-level="3">
+            <span class="level-text">Level 3</span>
+            <span class="hover-text">Start Game</span>
+        </button>
+        <button class="level-button" data-level="4">
+            <span class="level-text">Level 4</span>
+            <span class="hover-text">Start Game</span>
+        </button>
+        <button class="level-button" data-level="5">
+            <span class="level-text">Level 5</span>
+            <span class="hover-text">Start Game</span>
+        </button>
+    </div>
 </div>
+
 <div id="game-container">
     <canvas id="ga000me-canvas"></canvas>
 </div>
+
+<div id="timer-bar-container">
+    <div id="timer-bar"></div>
+</div>
+
 <div id="end-screen">
     <h1 id="end-message"></h1>
     <p id="game-time"></p>
@@ -48,6 +75,10 @@
 <!-- Кнопка паузы -->
 <button id="pause-button">Pause</button> <!-- ИЗМЕНЕНИЕ -->
 
+<div id="level-menu">
+    <div id="level-message"></div>
+    <button id="start-level-button">I get it!</button>
+</div>
 
 <script src="src/app.js" type="module"></script>
 </body>
