@@ -1,6 +1,6 @@
 import { initGame } from './game/engine.js';
 import { levels } from './game/levels.js';
-import { saveProgress, loadProgress, resetProgress } from './utils/storage.js';
+/*import { saveProgress, loadProgress, resetProgress } from './utils/storage.js';*/
 
 document.addEventListener('DOMContentLoaded', () => {
     //const startButton = document.getElementById('start-button');
@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         endScreen.style.display = 'none';
         gameContainer.style.display = 'block';
         pauseButton.style.display = 'block'; // Показать кнопку паузы //ИЗМЕНЕНИЕ
+        player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
       /*  tasksCompleted = initGame(gameContainer, endGameCallback, levels[selectedLevel - 1], tasksCompleted);*/
     });
 

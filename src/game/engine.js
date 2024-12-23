@@ -88,151 +88,174 @@ function showLevelMenu(levelConfig, startGameCallback) {
         ? "Rotate your phone to control the player!"
         : "Use arrow keys to control the player!";
 
-    levelMessage.innerHTML = `${levelConfig.instructions}<br>${deviceMessage}`;
-    levelMenu.style.transform = 'translateY(0)';
+/*
+    if (levelConfig.extraTimeI) {
+        const img = document.createElement('img');
+        img.src = './public/assets/images/ExtraTime.png';
+        img.alt = 'Extra Time Image';
+        img.style.width = '20px';
+        img.style.height = '20px'; 
+        levelMessage.appendChild(img);
+    }*/
 
-    visuallyResetTimer(levelConfig);
+    if (levelConfig.extraTimeI) {
 
-    startButton.onclick = () => {
-        levelMenu.style.transform = 'translateY(-100%)';
-        resetTimer();
-        isGameWaiting = false;
-        startTime = Date.now();
-        startGameCallback();
-    };
-}
+        levelMessage.innerHTML = `<p>${levelConfig.instructions}</p>
+                                 <img src='./public/assets/images/ExtraTime.png' alt='Extra Time Image'/>
+                                 <p>${deviceMessage}</p>`;
+            } else {
 
-export function initGame(container, endGameCallback, levelConfig,tasksCompleted = []) {
-    const existingCanvas = container.querySelector('canvas');
-    if (existingCanvas) {
-        container.removeChild(existingCanvas);
-    }
+            levelMessage.innerHTML = `${levelConfig.instructions}<br>${deviceMessage}`;
+        }
 
-    const canvas = document.createElement('canvas');
-    canvas.id = 'game-canvas';
-    container.appendChild(canvas);
 
-    const ctx = canvas.getContext('2d');
+            /* levelMessage.innerHTML = `${levelConfig.instructions}<br/>${deviceMessage}`;*/
+            /* levelMessage.innerHTML += `<br/>${levelConfig.instructions}<br/>${deviceMessage}`;*/
+            levelMenu.style.transform = 'translateY(0)';
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
 
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+            visuallyResetTimer(levelConfig);
 
-    const playerSize = 60;
-    const helmetSize = 40;
-    const cometSize = levelConfig.cometSize || 50;
-    const cometSpeed = levelConfig.cometSpeed;
-    const playerPosition = getRandomPosition(canvas.width, canvas.height, playerSize);
-    const helmetPosition = getRandomPosition(canvas.width, canvas.height, helmetSize);
+            startButton.onclick = () => {
+            levelMenu.style.transform = 'translateY(-100%)';
+            resetTimer();
+            isGameWaiting = false;
+            startTime = Date.now();
+            startGameCallback();
+        };
+            }
 
-    const player = new Player(playerPosition.x, playerPosition.y, playerSize, 'public/assets/images/IN_GAME.png');
-    const helmet = new Helmet(helmetPosition.x, helmetPosition.y, helmetSize, 'public/assets/images/Helmet.png');
+            export function initGame(container, endGameCallback, levelConfig) {
+            const existingCanvas = container.querySelector('canvas');
+            if (existingCanvas) {
+            container.removeChild(existingCanvas);
+        }
 
-    const comets = Array.from({ length: levelConfig.cometCount }, () => {
-        const cometPosition = getRandomPosition(canvas.width, canvas.height, cometSize);
-        return new Comet(cometPosition.x, cometPosition.y, cometSize, cometSpeed + Math.random() * 0.5, 'public/assets/images/Asteroid.png');
-    });
+            const canvas = document.createElement('canvas');
+            canvas.id = 'game-canvas';
+            container.appendChild(canvas);
 
-    const extraTimeItems = Array.from({ length: levelConfig.extraTimeC }, () => {
-        const position = getRandomPosition(canvas.width, canvas.height, 30);
-        return new ExtraTime(position.x, position.y, 30, 'public/assets/images/ExtraTime.png');
-    });
+            const ctx = canvas.getContext('2d');
 
-    setupControls(player);
+            function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-    const timerBarContainer = document.getElementById('timer-bar-container');
-    if (levelConfig.hasTimer) {
-        timerBarContainer.style.display = 'block';
-    } else {
-        timerBarContainer.style.display = 'none';
-    }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
-    const pauseButton = document.getElementById('pause-button');
-    pauseButton.style.display = 'block';
-    pauseButton.addEventListener('click', togglePause);
+            const playerSize = 60;
+            const helmetSize = 40;
+            const cometSize = levelConfig.cometSize || 50;
+            const cometSpeed = levelConfig.cometSpeed;
+            const playerPosition = getRandomPosition(canvas.width, canvas.height, playerSize);
+            const helmetPosition = getRandomPosition(canvas.width, canvas.height, helmetSize);
 
-    const continueButton = document.getElementById('continue-button');
-    continueButton.addEventListener('click', togglePause);
+            const player = new Player(playerPosition.x, playerPosition.y, playerSize, 'public/assets/images/IN_GAME.png');
+            const helmet = new Helmet(helmetPosition.x, helmetPosition.y, helmetSize, 'public/assets/images/Helmet.png');
 
-    // Показываем меню уровня перед запуском игры
-    showLevelMenu(levelConfig, () => {
-        startTime = Date.now(); // Устанавливаем начальное время
-    });
+            const comets = Array.from({length: levelConfig.cometCount}, () => {
+            const cometPosition = getRandomPosition(canvas.width, canvas.height, cometSize);
+            return new Comet(cometPosition.x, cometPosition.y, cometSize, cometSpeed + Math.random() * 0.5, 'public/assets/images/Asteroid.png');
+        });
 
-    function gameLoop() {
-        if (isGameWaiting) {
+            const extraTimeItems = Array.from({length: levelConfig.extraTimeC}, () => {
+            const position = getRandomPosition(canvas.width, canvas.height, 30);
+            return new ExtraTime(position.x, position.y, 30, 'public/assets/images/ExtraTime.png');
+        });
+
+            setupControls(player);
+
+            const timerBarContainer = document.getElementById('timer-bar-container');
+            if (levelConfig.hasTimer) {
+            timerBarContainer.style.display = 'block';
+        } else {
+            timerBarContainer.style.display = 'none';
+        }
+
+            const pauseButton = document.getElementById('pause-button');
+            pauseButton.style.display = 'block';
+            pauseButton.addEventListener('click', togglePause);
+
+            const continueButton = document.getElementById('continue-button');
+            continueButton.addEventListener('click', togglePause);
+
+            // Показываем меню уровня перед запуском игры
+            showLevelMenu(levelConfig, () => {
+            startTime = Date.now(); // Устанавливаем начальное время
+        });
+
+            function gameLoop() {
+            if (isGameWaiting) {
             renderGame(ctx, player, helmet, comets, extraTimeItems); // Отрисовываем статичную картинку
             requestAnimationFrame(gameLoop); // Продолжаем ожидание
             return;
         }
 
-        if (isPaused) {
+            if (isPaused) {
             requestAnimationFrame(gameLoop);
             return;
         }
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        applyGravity(player, levelConfig.gravity || 0.01);
-        player.update();
-        helmet.update();
+            applyGravity(player, levelConfig.gravity || 0.01);
+            player.update();
+            helmet.update();
 
-        if (levelConfig.hasTimer) {
+            if (levelConfig.hasTimer) {
             const remainingTime = updateTimer(startTime, levelConfig.timerDuration);
             if (remainingTime <= 0) {
-                isGameWaiting = true; // Переводим игру в состояние ожидания
-                endGameCallback('Time\'s Up!', elapsedTime);
-                return;
-            }
+            isGameWaiting = true; // Переводим игру в состояние ожидания
+            endGameCallback('Time\'s Up!', elapsedTime);
+            return;
+        }
         }
 
-        if (handleCollisions(player, helmet)) {
+            if (handleCollisions(player, helmet)) {
             isGameWaiting = true; // Переводим игру в состояние ожидания
             const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
             endGameCallback('You Win!', timeElapsed);
             return;
         }
 
-/*
+            /*
 
-        if (handleCollisions(player, helmet)) {
-            if (!tasksCompleted.includes(levelConfig.level)) {
-                tasksCompleted.push(levelConfig.level); // Добавить текущий уровень в список завершенных
-            }
-            isGameWaiting = true;
-            const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-            endGameCallback('You Win!', timeElapsed);
-            return;
-        }
-*/
-        for (let i = 0; i < comets.length; i++) {
+                    if (handleCollisions(player, helmet)) {
+                        if (!tasksCompleted.includes(levelConfig.level)) {
+                            tasksCompleted.push(levelConfig.level); // Добавить текущий уровень в список завершенных
+                        }
+                        isGameWaiting = true;
+                        const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                        endGameCallback('You Win!', timeElapsed);
+                        return;
+                    }
+            */
+            for (let i = 0; i < comets.length; i++) {
             comets[i].update();
 
             if (comets[i].collidesWith(player)) {
-                isGameWaiting = true; // Переводим игру в состояние ожидания
-                const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
-                endGameCallback('Game Over!', timeElapsed);
-                return;
-            }
+            isGameWaiting = true; // Переводим игру в состояние ожидания
+            const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+            endGameCallback('Game Over!', timeElapsed);
+            return;
+        }
         }
 
-        for (let i = 0; i < extraTimeItems.length; i++) {
+            for (let i = 0; i < extraTimeItems.length; i++) {
             if (extraTimeItems[i].collidesWith(player)) {
-                startTime += levelConfig.extraTime * 1000; // Добавить время
-                extraTimeItems.splice(i, 1); // Удалить элемент
-            }
+            startTime += levelConfig.extraTime * 1000; // Добавить время
+            extraTimeItems.splice(i, 1); // Удалить элемент
+        }
         }
 
-        renderGame(ctx, player, helmet, comets, extraTimeItems);
+            renderGame(ctx, player, helmet, comets, extraTimeItems);
 
-        requestAnimationFrame(gameLoop);
-    }
+            requestAnimationFrame(gameLoop);
+        }
 
-    gameLoop();
-    return player;
+            gameLoop();
+            return player;
 
-}
+        }

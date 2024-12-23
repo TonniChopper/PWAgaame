@@ -4,7 +4,7 @@ export const levels = [
         cometCount: 3,
         hasTimer: false,
         cometSpeed: 0,
-        instructions: "Level 1: Get ready to start your journey!",
+        instructions: "Level 1: Get ready to start your journey!\nCatch your helmet and avoid the dangerous comets!",
     },
     {
         level: 2,
@@ -12,7 +12,7 @@ export const levels = [
         hasTimer: true,
         timerDuration: 30,
         cometSpeed: 0,
-        instructions: "Level 2: Things are getting harder!",
+        instructions: "Level 2: Things are getting harder!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 30 seconds!",
     },
     {
         level: 3,
@@ -21,7 +21,7 @@ export const levels = [
         timerDuration: 15,
         extraTime: 2,
         cometSpeed: 0,
-        instructions: "Level 3: Stay focused!",
+        instructions: "Level 3: Stay focused!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 15 seconds!",
     },
     {
         level: 4,
@@ -34,7 +34,7 @@ export const levels = [
         gravity: 0.03,
         cometSpeed: 1,
         cometSize: 60,
-        instructions: "Level 4: It's getting intense!",
+        instructions: "Level 4: It's getting intense!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 15 seconds!\nCatch extra time to keep your run alive!",
     },
     {
         level: 5,
@@ -47,6 +47,6 @@ export const levels = [
         gravity: 0.05,
         cometSize: 70,
         cometSpeed: 2,
-        instructions: "Level 5: Final challenge. Good luck!",
+        instructions: "Level 5: Final challenge. Good luck!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 10 seconds!\nCatch extra time to keep your run alive!",
     },
 ];
