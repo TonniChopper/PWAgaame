@@ -208,7 +208,7 @@ body {
     font-family: "Audiowide", sans-serif;
 }
 
-#play-again-button:hover,#pause-button:hover,#next-level-button:hover,#start-level-button:hover {
+#play-again-button:hover,#pause-button:hover,#next-level-button:hover,#start-level-button:hover,#back-to-menu-button:hover {
     background-color: #3700b3;
     transform: scale(1.05);
 }
@@ -242,11 +242,7 @@ body {
     transition: background-color 0.3s, transform 0.3s;
     font-family: "Audiowide", sans-serif;
 }
-/*
-#pause-button:hover,#next-level-button:hover {
-    background-color: #3700b3;
-}
-*/
+
 #pause-menu,#level-menu{ /*ИЗМЕНЕНИЕ*/
     position: fixed;
     top: 0;
@@ -281,8 +277,8 @@ body {
 }
 
 #level-message img{
-    width: 10vw; /* Устанавливает размер изображения в зависимости от ширины экрана */
-    max-width: 100px; /* Максимальный размер изображения */
+    width: 10vw;
+    max-width: 100px;
     height: auto;
     display: inline-block;
 }
@@ -322,7 +318,7 @@ body {
 }
 
 
-#continue-button,#next-level-button,#start-level-button { /*ИЗМЕНЕНИЕ*/
+#continue-button,#next-level-button,#start-level-button,#back-to-menu-button { /*ИЗМЕНЕНИЕ*/
     padding: 10px 20px;
     font-size: 18px;
     color: white;
@@ -333,11 +329,7 @@ body {
     transition: background-color 0.3s, transform 0.3s;
     font-family: "Audiowide", sans-serif;
 }
-/*
-#continue-button:hover {
-    background-color: #3700b3;
-}
-*/
+
 @media (max-height: 500px) and (orientation: landscape) {
     #end-screen {
         padding: 10px;
@@ -356,7 +348,7 @@ body {
         font-size: 14px;
     }
 
-    #play-again-button,#next-level-button{
+    #play-again-button,#next-level-button,#back-to-menu-button{
         font-size: 14px;
         padding: 8px 16px;
     }

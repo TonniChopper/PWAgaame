@@ -48,7 +48,7 @@ function updateTimer(startTime, timerDuration) {
     if (!isPaused && !isGameWaiting) {
         elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
     }
-
+/*
     if (timeElement) {
         timeElement.textContent = `Time: ${elapsedTime} s`;
     }
@@ -58,6 +58,20 @@ function updateTimer(startTime, timerDuration) {
         timerBar.style.width = `${progress}%`;
     }
     return timerDuration - elapsedTime;
+*/
+
+    const remainingTime = Math.max(0, timerDuration - elapsedTime); // Гарантируем, что время >= 0
+
+    if (timeElement) {
+        timeElement.textContent = `Time: ${remainingTime.toFixed(1)} s`; // Выводим только положительное время
+    }
+    if (timerBar) {
+        const progress = (remainingTime / timerDuration) * 100;
+        timerBar.style.width = `${Math.max(progress, 0)}%`; // Убедиться, что ширина прогресс-бара >= 0
+    }
+
+    return remainingTime;
+
 }
 
 function togglePause() {
@@ -94,7 +108,7 @@ function showLevelMenu(levelConfig, startGameCallback) {
         img.src = './public/assets/images/ExtraTime.png';
         img.alt = 'Extra Time Image';
         img.style.width = '20px';
-        img.style.height = '20px'; 
+        img.style.height = '20px';
         levelMessage.appendChild(img);
     }*/
 
@@ -168,10 +182,14 @@ function showLevelMenu(levelConfig, startGameCallback) {
             setupControls(player);
 
             const timerBarContainer = document.getElementById('timer-bar-container');
+                const timeElement = document.getElementById('game-timer');
             if (levelConfig.hasTimer) {
             timerBarContainer.style.display = 'block';
+                timeElement.style.display = 'block';
+
         } else {
             timerBarContainer.style.display = 'none';
+                timeElement.style.display = 'none';
         }
 
             const pauseButton = document.getElementById('pause-button');

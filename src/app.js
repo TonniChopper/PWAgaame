@@ -1,6 +1,6 @@
 import { initGame } from './game/engine.js';
 import { levels } from './game/levels.js';
-/*import { saveProgress, loadProgress, resetProgress } from './utils/storage.js';*/
+
 
 document.addEventListener('DOMContentLoaded', () => {
     //const startButton = document.getElementById('start-button');
@@ -10,16 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const playAgainButton = document.getElementById('play-again-button');
     const endMessage = document.getElementById('end-message');
     const gameTime = document.getElementById('game-time');
-    const canvas = document.getElementById('game-canvas');
     const pauseButton = document.getElementById('pause-button'); //ИЗМЕНЕНИЕ
     const levelButtons = document.querySelectorAll('.level-button');
 
     let player;
     let selectedLevel = 0;
-
-   /* const savedProgress = loadProgress();
-    let selectedLevel = savedProgress.level;
-    let tasksCompleted = savedProgress.tasksCompleted;*/
 
     levelButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -30,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 endScreen.style.display = 'none';
                 player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
                 pauseButton.style.display = 'block';
-
-                // Показать окно уровня перед его запуском
             }
         });
     });
@@ -58,19 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playAgainButton.addEventListener('click', () => {
 
-        /*const savedProgress = loadProgress();
-        selectedLevel = savedProgress ? savedProgress.level : 1;*/
         endScreen.style.display = 'none';
         gameContainer.style.display = 'block';
         pauseButton.style.display = 'block'; // Показать кнопку паузы //ИЗМЕНЕНИЕ
         player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
-      /*  tasksCompleted = initGame(gameContainer, endGameCallback, levels[selectedLevel - 1], tasksCompleted);*/
     });
 
 
 
     function endGameCallback(message, time) {
-
 
         pauseButton.style.display = 'none';
 
@@ -92,17 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (message === 'You Win!') {
 /*
-            if (!tasksCompleted.includes(selectedLevel)) {
-                tasksCompleted.push(selectedLevel); // Добавить уровень в список выполненных
-            }*/
-
             const nextLevelButton = document.createElement('button');
             nextLevelButton.id = 'next-level-button'
             nextLevelButton.textContent = 'Next Level';
-            nextLevelButton.style.marginTop = '20px'; // Отступ сверху
+            nextLevelButton.style.marginTop = '20px';
             nextLevelButton.addEventListener('click', () => {
               /*  selectedLevel = (selectedLevel + 2) % levels.length;*/
-                selectedLevel = Math.min(parseInt(selectedLevel, 10) + 1, levels.length);
+             /*   selectedLevel = Math.min(parseInt(selectedLevel, 10) + 1, levels.length);
 
 
                 endScreen.style.display = 'none';
@@ -110,7 +95,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 player = initGame(gameContainer, endGameCallback, levels[selectedLevel-1]);
             });
             endScreen.appendChild(nextLevelButton);
-            /*saveProgress(selectedLevel + 1, tasksCompleted); // Следующий уровень*/
+            */
+
+
+            if (selectedLevel < levels.length) {
+                const nextLevelButton = document.createElement('button');
+                nextLevelButton.id = 'next-level-button';
+                nextLevelButton.textContent = 'Next Level';
+                nextLevelButton.style.marginTop = '20px'; // Отступ сверху
+                nextLevelButton.addEventListener('click', () => {
+                    selectedLevel = Math.min(parseInt(selectedLevel, 10) + 1, levels.length);
+
+                    endScreen.style.display = 'none';
+                    gameContainer.style.display = 'block';
+                    player = initGame(gameContainer, endGameCallback, levels[selectedLevel - 1]);
+                });
+                endScreen.appendChild(nextLevelButton);
+            } else {
+                const backToMenuButton = document.createElement('button');
+                backToMenuButton.id = 'back-to-menu-button'; // ИЗМЕНЕНИЕ: Назначаем уникальный ID
+                backToMenuButton.textContent = 'Back to Menu'; // ИЗМЕНЕНИЕ: Кнопка для возврата в меню
+                backToMenuButton.style.marginTop = '20px'; // ИЗМЕНЕНИЕ: Отступ сверху
+                backToMenuButton.addEventListener('click', () => {
+
+                    const timeElement = document.getElementById('game-timer');
+                    const timerBarContainer = document.getElementById('timer-bar-container');
+
+
+                    if (timeElement) {
+                        timeElement.style.display = 'none'; // ИЗМЕНЕНИЕ: Скрываем таймер
+                    }
+                    if (timerBarContainer) {
+                        timerBarContainer.style.display = 'none'; // ИЗМЕНЕНИЕ: Скрываем полоску таймера
+                    }
+
+
+                    endScreen.style.display = 'none';
+                    gameContainer.style.display = 'none';
+                    menu.style.display = 'flex';
+                });
+                endScreen.appendChild(backToMenuButton); // ИЗМЕНЕНИЕ: Добавляем кнопку на экран
+            }
         }
 
         playAgainButton.style.display = 'block';

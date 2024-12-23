@@ -4,13 +4,15 @@ backgroundImage.src = 'public/assets/images/space.jpg';
 
 export function renderGame(ctx, player, helmet, comets, extraTimeItems) {
 
+
+    /*
     let timeElement = document.getElementById('game-timer'); //ИЗМЕНЕНИЕ
     if (!timeElement) { //ИЗМЕНЕНИЕ
         timeElement = document.createElement('div'); //ИЗМЕНЕНИЕ
         timeElement.id = 'game-timer'; //ИЗМЕНЕНИЕ
         document.body.appendChild(timeElement); //ИЗМЕНЕНИЕ
     }
-
+*/
 
     // Draw background
     if (backgroundImage.complete) {
