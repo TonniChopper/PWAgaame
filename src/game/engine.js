@@ -46,6 +46,7 @@ function updateTimer(startTime, timerDuration) {
 
     // Таймер работает только если игра идет (не на паузе и не в ожидании)
     if (!isPaused && !isGameWaiting) {
+
         elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
     }
 /*
@@ -58,6 +59,7 @@ function updateTimer(startTime, timerDuration) {
         timerBar.style.width = `${progress}%`;
     }
     return timerDuration - elapsedTime;
+
 */
 
     const remainingTime = Math.max(0, timerDuration - elapsedTime); // Гарантируем, что время >= 0
@@ -92,6 +94,7 @@ function togglePause() {
     }
 }
 
+
 function showLevelMenu(levelConfig, startGameCallback) {
     const levelMenu = document.getElementById('level-menu');
     const levelMessage = document.getElementById('level-message');
@@ -123,12 +126,15 @@ function showLevelMenu(levelConfig, startGameCallback) {
         }
 
 
+
             /* levelMessage.innerHTML = `${levelConfig.instructions}<br/>${deviceMessage}`;*/
             /* levelMessage.innerHTML += `<br/>${levelConfig.instructions}<br/>${deviceMessage}`;*/
             levelMenu.style.transform = 'translateY(0)';
 
 
+
             visuallyResetTimer(levelConfig);
+
 
             startButton.onclick = () => {
             levelMenu.style.transform = 'translateY(-100%)';
@@ -139,11 +145,13 @@ function showLevelMenu(levelConfig, startGameCallback) {
         };
             }
 
+
             export function initGame(container, endGameCallback, levelConfig) {
             const existingCanvas = container.querySelector('canvas');
             if (existingCanvas) {
             container.removeChild(existingCanvas);
         }
+
 
             const canvas = document.createElement('canvas');
             canvas.id = 'game-canvas';
@@ -218,6 +226,7 @@ function showLevelMenu(levelConfig, startGameCallback) {
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+
             applyGravity(player, levelConfig.gravity || 0.01);
             player.update();
             helmet.update();
@@ -229,6 +238,7 @@ function showLevelMenu(levelConfig, startGameCallback) {
             endGameCallback('Time\'s Up!', elapsedTime);
             return;
         }
+
         }
 
             if (handleCollisions(player, helmet)) {
@@ -261,12 +271,14 @@ function showLevelMenu(levelConfig, startGameCallback) {
         }
         }
 
+
             for (let i = 0; i < extraTimeItems.length; i++) {
             if (extraTimeItems[i].collidesWith(player)) {
             startTime += levelConfig.extraTime * 1000; // Добавить время
             extraTimeItems.splice(i, 1); // Удалить элемент
         }
         }
+
 
             renderGame(ctx, player, helmet, comets, extraTimeItems);
 
@@ -277,3 +289,4 @@ function showLevelMenu(levelConfig, startGameCallback) {
             return player;
 
         }
+

@@ -83,6 +83,10 @@ body {
     gap: 10px;
 
 }
+#level-buttons {
+    display: flex;
+    gap: 10px;
+}
 
 .level-button {
     position: relative;
@@ -149,6 +153,7 @@ body {
 }
 
 #level-button:hover, #play-again-button:hover,#continue-button:hover {
+
     background-color: #3700b3;
     transform: scale(1.05);
 }

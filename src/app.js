@@ -1,9 +1,9 @@
-
 import { initGame } from './game/engine.js';
 import {levels} from './game/levels.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const menu = document.getElementById('menu');
     const gameContainer = document.getElementById('game-container');
     const endScreen = document.getElementById('end-screen');
@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 endScreen.appendChild(backToMenuButton);
             }
+
         }
 
         playAgainButton.style.display = 'block';

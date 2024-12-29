@@ -35,6 +35,7 @@ export const levels = [
         cometSpeed: 1,
         cometSize: 60,
         instructions: "Level 4: It's getting intense!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 15 seconds!\nCatch extra time to keep your run alive!",
+
     },
     {
         level: 5,
@@ -50,3 +51,4 @@ export const levels = [
         instructions: "Level 5: Final challenge. Good luck!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 10 seconds!\nCatch extra time to keep your run alive!",
     },
 ];
+
