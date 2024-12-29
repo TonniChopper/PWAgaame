@@ -5,15 +5,6 @@ backgroundImage.src = 'public/assets/images/space.jpg';
 export function renderGame(ctx, player, helmet, comets, extraTimeItems) {
 
 
-    /*
-    let timeElement = document.getElementById('game-timer'); //ИЗМЕНЕНИЕ
-    if (!timeElement) { //ИЗМЕНЕНИЕ
-        timeElement = document.createElement('div'); //ИЗМЕНЕНИЕ
-        timeElement.id = 'game-timer'; //ИЗМЕНЕНИЕ
-        document.body.appendChild(timeElement); //ИЗМЕНЕНИЕ
-    }
-*/
-
     // Draw background
     if (backgroundImage.complete) {
         ctx.drawImage(backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -45,31 +36,3 @@ export function renderGame(ctx, player, helmet, comets, extraTimeItems) {
     }
 }
 
-
-/*
-export function renderEndScreen(ctx, player, message, timeElapsed) {
-    // Draw background
-    if (backgroundImage.complete) {
-        ctx.drawImage(backgroundImage, 0, 0, ctx.canvas.width, ctx.canvas.height);
-    }
-
-    // Display end message
-    ctx.fillStyle = 'white';
-    ctx.font = '48px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(message, ctx.canvas.width / 2, ctx.canvas.height / 2 - 50);
-
-    // Display time elapsed
-    ctx.font = '24px Arial';
-    ctx.fillText(`Time: ${timeElapsed} seconds`, ctx.canvas.width / 2, ctx.canvas.height / 2);
-
-    // Draw player image on the side if loaded
-    if (player.image && player.image.complete) {
-        const imageSize = 100;
-        ctx.drawImage(player.image, ctx.canvas.width - imageSize - 20, 20, imageSize, imageSize);
-    }
-    const playAgainButton = document.getElementById('play-again-button');
-    playAgainButton.style.display = 'block';
-}
-
-*/
