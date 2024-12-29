@@ -1,13 +1,23 @@
-import {Player} from './entities.js';
-import {Helmet, Comet, ExtraTime} from './items.js';
-import {setupControls} from '../ui/controls.js';
-import {renderGame} from '../ui/renderer.js';
-import {applyGravity, handleCollisions} from './physics.js';
+import { Player } from './entities.js';
+import { Helmet, Comet, ExtraTime } from './items.js';
+import { setupControls } from '../ui/controls.js';
+import { renderGame } from '../ui/renderer.js';
+import { applyGravity, handleCollisions } from './physics.js';
+
+async function loadLevels() {
+    try {
+        const response = await axios.get('./src/game/levels.json');
+        return response.data;
+    } catch (error) {
+        console.error('Error loading levels:', error);
+        return [];
+    }
+}
 
 function getRandomPosition(maxWidth, maxHeight, size) {
     const x = Math.random() * (maxWidth - size);
     const y = Math.random() * (maxHeight - size);
-    return {x, y};
+    return { x, y };
 }
 
 let elapsedTime = 0;
@@ -37,30 +47,26 @@ function visuallyResetTimer(levelConfig) {
     if (timerBar) {
         timerBar.style.width = '100%';
     }
-
 }
 
 function updateTimer(startTime, timerDuration) {
     const timeElement = document.getElementById('game-timer');
     const timerBar = document.getElementById('timer-bar');
 
-    // Таймер работает только если игра идет (не на паузе и не в ожидании)
     if (!isPaused && !isGameWaiting) {
-
         elapsedTime = ((Date.now() - startTime) / 1000).toFixed(1);
     }
-    const remainingTime = Math.max(0, timerDuration - elapsedTime); // Гарантируем, что время >= 0
+    const remainingTime = Math.max(0, timerDuration - elapsedTime);
 
     if (timeElement) {
-        timeElement.textContent = `Time: ${remainingTime.toFixed(1)} s`; // Выводим только положительное время
+        timeElement.textContent = `Time: ${remainingTime.toFixed(1)} s`;
     }
     if (timerBar) {
         const progress = (remainingTime / timerDuration) * 100;
-        timerBar.style.width = `${Math.max(progress, 0)}%`; // Убедиться, что ширина прогресс-бара >= 0
+        timerBar.style.width = `${Math.max(progress, 0)}%`;
     }
 
     return remainingTime;
-
 }
 
 function togglePause() {
@@ -81,7 +87,6 @@ function togglePause() {
     }
 }
 
-
 function showLevelMenu(levelConfig, startGameCallback) {
     const levelMenu = document.getElementById('level-menu');
     const levelMessage = document.getElementById('level-message');
@@ -93,23 +98,15 @@ function showLevelMenu(levelConfig, startGameCallback) {
         : "Use arrow keys to control the player!";
 
     if (levelConfig.extraTimeI) {
-
         levelMessage.innerHTML = `<p>${levelConfig.instructions}</p>
                                  <img src='./public/assets/images/ExtraTime.png' alt='Extra Time Image'/>
                                  <p>${deviceMessage}</p>`;
     } else {
-
         levelMessage.innerHTML = `${levelConfig.instructions}<br>${deviceMessage}`;
     }
 
-
-    /* levelMessage.innerHTML = `${levelConfig.instructions}<br/>${deviceMessage}`;*/
-    /* levelMessage.innerHTML += `<br/>${levelConfig.instructions}<br/>${deviceMessage}`;*/
     levelMenu.style.transform = 'translateY(0)';
-
-
     visuallyResetTimer(levelConfig);
-
 
     startButton.onclick = () => {
         levelMenu.style.transform = 'translateY(-100%)';
@@ -120,7 +117,6 @@ function showLevelMenu(levelConfig, startGameCallback) {
     };
 }
 
-// Function to check if the character overlaps with any comet
 function isOverlappingWithComet(character, comets) {
     return comets.some(comet => {
         const dx = character.x - comet.x;
@@ -130,7 +126,15 @@ function isOverlappingWithComet(character, comets) {
     });
 }
 
-export function initGame(container, endGameCallback, levelConfig) {
+export async function initGame(container, endGameCallback, levelConfig) {
+    const levels = await loadLevels();
+    const currentLevel = levels.find(level => level.level === levelConfig.level);
+
+    if (!currentLevel) {
+        console.error('Level not found');
+        return;
+    }
+
     const existingCanvas = container.querySelector('canvas');
     if (existingCanvas) {
         container.removeChild(existingCanvas);
@@ -152,18 +156,18 @@ export function initGame(container, endGameCallback, levelConfig) {
 
     const playerSize = 60;
     const helmetSize = 40;
-    const cometSize = levelConfig.cometSize || 50;
-    const cometSpeed = levelConfig.cometSpeed;
+    const cometSize = currentLevel.cometSize || 50;
+    const cometSpeed = currentLevel.cometSpeed;
 
     const helmetPosition = getRandomPosition(canvas.width, canvas.height, helmetSize);
     const helmet = new Helmet(helmetPosition.x, helmetPosition.y, helmetSize, 'public/assets/images/Helmet.png');
 
-    const comets = Array.from({ length: levelConfig.cometCount }, () => {
+    const comets = Array.from({ length: currentLevel.cometCount }, () => {
         const cometPosition = getRandomPosition(canvas.width, canvas.height, cometSize);
         return new Comet(cometPosition.x, cometPosition.y, cometSize, cometSpeed + Math.random() * 0.5, 'public/assets/images/Asteroid.png', canvas);
     });
 
-    const extraTimeItems = Array.from({ length: levelConfig.extraTimeC }, () => {
+    const extraTimeItems = Array.from({ length: currentLevel.extraTimeC }, () => {
         const position = getRandomPosition(canvas.width, canvas.height, 30);
         return new ExtraTime(position.x, position.y, 30, 'public/assets/images/ExtraTime.png');
     });
@@ -179,7 +183,7 @@ export function initGame(container, endGameCallback, levelConfig) {
 
     const timerBarContainer = document.getElementById('timer-bar-container');
     const timeElement = document.getElementById('game-timer');
-    if (levelConfig.hasTimer) {
+    if (currentLevel.hasTimer) {
         timerBarContainer.style.display = 'block';
         timeElement.style.display = 'block';
     } else {
@@ -194,7 +198,7 @@ export function initGame(container, endGameCallback, levelConfig) {
     const continueButton = document.getElementById('continue-button');
     continueButton.addEventListener('click', togglePause);
 
-    showLevelMenu(levelConfig, () => {
+    showLevelMenu(currentLevel, () => {
         startTime = Date.now();
     });
 
@@ -212,12 +216,12 @@ export function initGame(container, endGameCallback, levelConfig) {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        applyGravity(player, levelConfig.gravity || 0.01);
+        applyGravity(player, currentLevel.gravity || 0.01);
         player.update();
         helmet.update();
 
-        if (levelConfig.hasTimer) {
-            const remainingTime = updateTimer(startTime, levelConfig.timerDuration);
+        if (currentLevel.hasTimer) {
+            const remainingTime = updateTimer(startTime, currentLevel.timerDuration);
             if (remainingTime <= 0) {
                 isGameWaiting = true;
                 endGameCallback('Time\'s Up!', elapsedTime);
@@ -245,7 +249,7 @@ export function initGame(container, endGameCallback, levelConfig) {
 
         for (let i = 0; i < extraTimeItems.length; i++) {
             if (extraTimeItems[i].collidesWith(player)) {
-                startTime += levelConfig.extraTime * 1000;
+                startTime += currentLevel.extraTime * 1000;
                 extraTimeItems.splice(i, 1);
             }
         }
@@ -258,4 +262,3 @@ export function initGame(container, endGameCallback, levelConfig) {
     gameLoop();
     return player;
 }
-
