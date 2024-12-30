@@ -39,7 +39,7 @@ export const levels = [
     },
     {
         level: 5,
-        cometCount: 8,
+        cometCount: 7,
         hasTimer: true,
         timerDuration: 10,
         extraTimeI: true,
@@ -48,7 +48,7 @@ export const levels = [
         gravity: 0.05,
         cometSize: 70,
         cometSpeed: 2,
-        instructions: "Level 5: Final challenge. Good luck!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 10 seconds!\nCatch extra time to keep your run alive!",
+        instructions: "Level 5: Good luck!\nCatch your helmet and avoid the dangerous comets!\nTime is limited! You only have 10 seconds!\nCatch extra time to keep your run alive!",
     },
 ];
 

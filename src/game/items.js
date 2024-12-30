@@ -44,36 +44,33 @@ export class Helmet {
 }
 
 export class Comet {
-    constructor(x, y, size, speed, imageSrc) {
+    constructor(x, y, size, speed, imageSrc, canvas) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speed = speed;
         this.image = new Image();
         this.image.src = imageSrc;
+        this.direction = Math.random() * 2 * Math.PI;
+        this.canvas = canvas;
     }
 
     update() {
-        this.y += this.speed;
-        if (this.y > window.innerHeight) {
-            this.y = -this.size;
-            this.x = Math.random() * (window.innerWidth - this.size);
-        }
+        this.x += this.speed * Math.cos(this.direction);
+        this.y += this.speed * Math.sin(this.direction);
+
+        // Handle boundary conditions (e.g., wrap around or bounce)
+        if (this.x < 0) this.x = this.canvas.width;
+        if (this.x > this.canvas.width) this.x = 0;
+        if (this.y < 0) this.y = this.canvas.height;
+        if (this.y > this.canvas.height) this.y = 0;
     }
 
-    // draw(ctx) {
-    //     if (this.image.complete) {
-    //         ctx.drawImage(this.image, this.x, this.y, this.size, this.size);
-    //     }
-    // }
-
     collidesWith(player) {
-        return (
-            this.x < player.x + player.size &&
-            this.x + this.size > player.x &&
-            this.y < player.y + player.size &&
-            this.y + this.size > player.y
-        );
+        const dx = this.x - player.x;
+        const dy = this.y - player.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < (this.size / 2 + player.size / 2);
     }
 }
 export class ExtraTime {
@@ -84,22 +81,6 @@ export class ExtraTime {
         this.image = new Image();
         this.image.src = imageSrc;
     }
-    //     this.imageLoaded = false;
-    //
-    //     this.image.onload = () => {
-    //         this.imageLoaded = true;
-    //     };
-    // }
-
-    // update() {
-    //
-    // }
-    //
-    // draw(ctx) {
-    //     if (this.imageLoaded) {
-    //         ctx.drawImage(this.image, this.x, this.y, this.size, this.size);
-    //     }
-    // }
 
     collidesWith(player) {
         const dx = this.x - player.x;

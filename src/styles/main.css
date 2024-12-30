@@ -375,3 +375,28 @@ body {
     transition: width 0.1s linear; /* Плавное изменение ширины */
 }
 
+
+@media print {
+
+    body * {
+        visibility: hidden;
+    }
+
+
+    #level-message, #level-menu p, #level-menu img {
+        visibility: visible;
+        position: static;
+        margin: 0 auto;
+        display: block;
+    }
+
+    #level-menu {
+        visibility: visible;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transform: none;
+    }
+
+}
