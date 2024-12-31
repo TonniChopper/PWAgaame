@@ -1,6 +1,5 @@
-
-
 export function setupControls(player, currentLevel) {
+    // Управление с клавиатуры
     document.addEventListener('keydown', (event) => {
         const speedChange = 0.5;
         switch (event.key) {
@@ -19,6 +18,7 @@ export function setupControls(player, currentLevel) {
         }
     });
 
+    // Проверяем поддержку DeviceOrientationEvent
     if (!window.DeviceOrientationEvent) return;
 
     let sensitivity = 0.05;
@@ -40,10 +40,9 @@ export function setupControls(player, currentLevel) {
             // Проверка ориентации экрана
             const orientation = screen.orientation || screen.mozOrientation || screen.msOrientation;
             if (orientation && orientation.type.startsWith('landscape')) {
-                // Если горизонтальная ориентация
                 const temp = targetSpeedX;
-                targetSpeedX = targetSpeedY; // Поменять местами
-                targetSpeedY = -temp;       // Инверсия оси
+                targetSpeedX = targetSpeedY;
+                targetSpeedY = -temp;
             }
 
             player.speedX = Math.min(Math.max(player.speedX * damping + targetSpeedX * (1 - damping), -6), 6);
@@ -51,17 +50,31 @@ export function setupControls(player, currentLevel) {
         }
     };
 
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        DeviceOrientationEvent.requestPermission()
-            .then((permissionState) => {
-                if (permissionState === 'granted') {
-                    window.addEventListener('deviceorientation', applyGyroMovement);
-                } else {
-                    alert("Gyroscope is disabled by the user. Please enable access in the device settings.");
-                }
-            })
-            .catch(() => alert("Failed to request permission for gyroscope access"));
-    } else {
-        window.addEventListener('deviceorientation', applyGyroMovement);
-    }
+    // Добавляем обработчик на кнопку "start-level-button"
+    const startButton = document.getElementById('start-level-button');
+
+    if (!startButton) return;
+
+    startButton.addEventListener('click', () => {
+        // Проверяем поддержку и запрашиваем разрешение
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then((permissionState) => {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', applyGyroMovement);
+                        console.log('Доступ к гироскопу предоставлен.');
+                    } else {
+                        alert("The gyroscope is disabled by the user. Please enable access in your device settings.");
+                    }
+                })
+                .catch(() => alert("Failed to request permission to access the gyroscope."));
+        } else {
+            // Если `requestPermission` не требуется
+            window.addEventListener('deviceorientation', applyGyroMovement);
+            console.log('DeviceOrientationEvent доступен без запроса разрешения.');
+        }
+    });
+
 }
+
+
