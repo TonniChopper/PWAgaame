@@ -150,10 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const timerBarContainer = document.getElementById('timer-bar-container');
 
                     if (timeElement) {
-                        timeElement.style.display = 'none'; // ИЗМЕНЕНИЕ: Скрываем таймер
+                        timeElement.style.display = 'none';
                     }
                     if (timerBarContainer) {
-                        timerBarContainer.style.display = 'none'; // ИЗМЕНЕНИЕ: Скрываем полоску таймера
+                        timerBarContainer.style.display = 'none';
                     }
                     endScreen.style.display = 'none';
                     gameContainer.style.display = 'none';
@@ -176,19 +176,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 50);
     }
 
-    // Проверяем состояние игры при загрузке страницы
+
     checkGameStateOnLoad();
 
-    // Тесты для локального хранилища
-    console.log('Initial completed levels:', completedLevels); // Проверка сохранённых уровней
 
-    // Тестовая функция для сброса хранилища
+    console.log('Initial completed levels:', completedLevels);
+
+
     function resetLocalStorage() {
         console.log('Resetting localStorage.');
         localStorage.removeItem('completedLevels');
         console.log('Completed levels after reset:', localStorage.getItem('completedLevels'));
     }
 
-    // Запустить тесты
-    resetLocalStorage(); // Сбросить данные перед тестами
+
+    resetLocalStorage();
 });

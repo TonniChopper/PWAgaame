@@ -25,11 +25,13 @@ let isPaused = false;
 let isGameWaiting = true;
 let startTime = 0;
 let pauseTime = 0;
+let startLevelTime = 0;
 
 function resetTimer() {
     elapsedTime = 0;
     startTime = 0;
     pauseTime = 0;
+    startLevelTime = 0;
     visuallyResetTimer();
 }
 
@@ -81,6 +83,7 @@ function togglePause() {
     } else {
         const pausedDuration = Date.now() - pauseTime;
         startTime += pausedDuration;
+        startLevelTime += pausedDuration;
         isPaused = false;
         pauseMenu.style.transform = 'translateY(-100%)';
         continueIcon.style.display = 'none';
@@ -113,6 +116,7 @@ function showLevelMenu(levelConfig, startGameCallback) {
         resetTimer();
         isGameWaiting = false;
         startTime = Date.now();
+        startLevelTime = Date.now();
         startGameCallback();
     };
 }
@@ -129,8 +133,6 @@ function isOverlappingWithComet(character, comets) {
 export async function initGame(container, endGameCallback, levelConfig) {
     const levels = await loadLevels();
     const currentLevel = levels.find(level => level.level === levelConfig.level);
-
-    //alert(`${currentLevel.level}`);
 
     if (!currentLevel) {
         console.error('Level not found');
@@ -202,6 +204,7 @@ export async function initGame(container, endGameCallback, levelConfig) {
 
     showLevelMenu(currentLevel, () => {
         startTime = Date.now();
+        startLevelTime = Date.now();
     });
 
     function gameLoop() {
@@ -233,7 +236,7 @@ export async function initGame(container, endGameCallback, levelConfig) {
 
         if (handleCollisions(player, helmet)) {
             isGameWaiting = true;
-            const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+            const timeElapsed = ((Date.now() - startLevelTime) / 1000).toFixed(2);
             endGameCallback('You Win!', timeElapsed);
             return;
         }
@@ -243,7 +246,7 @@ export async function initGame(container, endGameCallback, levelConfig) {
 
             if (comets[i].collidesWith(player)) {
                 isGameWaiting = true;
-                const timeElapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                const timeElapsed = ((Date.now() - startLevelTime) / 1000).toFixed(2);
                 endGameCallback('Game Over!', timeElapsed);
                 return;
             }

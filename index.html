@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Game</title>
+    <link rel="manifest" href="manifest.json">
     <!-- Подключение фавикона для компьютеров -->
     <link rel="icon" href="public/assets/favicon/favicon-16x16.png" type="image/x-icon">
 
@@ -69,7 +70,19 @@
     <div id="level-message"></div>
     <button id="start-level-button">I get it!</button>
 </div>
-
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('public/service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+        });
+    }
+</script>
 <script src="src/app.js" type="module"></script>
 </body>
 </html>
